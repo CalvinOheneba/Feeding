@@ -1,0 +1,5 @@
+{
+  "name": "Copy of Advent Reformed Institute – School Feeding Fee Management System",
+  "description": "A web application to record and manage the daily feeding fee payments of students at their various bus stations, with role-based access for administrators and teachers.",
+  "requestFramePermissions": []
+}
