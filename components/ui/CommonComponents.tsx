@@ -1,6 +1,6 @@
 
 import React, { useState, ReactNode } from 'react';
-import { useAppContext } from '../../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { GraduationCapIcon, HomeIcon, UsersIcon, BusIcon, ReportIcon, PaymentIcon, LogoutIcon, TeacherIcon } from './Icons';
 import { Role } from '../../types';
 
@@ -137,7 +137,7 @@ export const Table: React.FC<TableProps> = ({ headers, children }) => {
 
 
 const Header = ({ setSidebarOpen }: { setSidebarOpen: (open: boolean) => void }) => {
-    const { currentUser, logout } = useAppContext();
+    const { currentUser, logout } = useApp();
     return (
         <header className="bg-white dark:bg-gray-800 shadow-md h-16 flex items-center justify-between px-4 lg:px-6">
             <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-gray-500 dark:text-gray-400">
@@ -161,7 +161,7 @@ const Header = ({ setSidebarOpen }: { setSidebarOpen: (open: boolean) => void })
 
 
 const Sidebar = ({ activePage, onNavigate }: { activePage: string, onNavigate: (page: string) => void }) => {
-    const { currentUser } = useAppContext();
+    const { currentUser } = useApp();
     const isAdmin = currentUser?.role === Role.Admin;
 
     const navItems = isAdmin
@@ -178,7 +178,17 @@ const Sidebar = ({ activePage, onNavigate }: { activePage: string, onNavigate: (
             { name: 'Reports', icon: ReportIcon, key: 'reports' },
         ];
 
-    const NavLink = ({ item }: { item: typeof navItems[0] }) => (
+    interface NavItem {
+        name: string;
+        icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactElement;
+        key: string;
+    }
+
+    interface NavLinkProps {
+        item: NavItem;
+    }
+
+    const NavLink = React.memo(({ item }: NavLinkProps) => (
         <button
             onClick={() => onNavigate(item.key)}
             className={`flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
@@ -190,7 +200,7 @@ const Sidebar = ({ activePage, onNavigate }: { activePage: string, onNavigate: (
             <item.icon className="h-5 w-5 mr-3" />
             {item.name}
         </button>
-    );
+    ));
 
     return (
         <div className="bg-gray-800 dark:bg-gray-900 text-white h-full flex flex-col p-4">

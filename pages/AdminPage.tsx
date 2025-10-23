@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo, FC } from 'react';
 import { DashboardLayout, Card, Table, Button, Modal, Input, Select } from '../components/ui/CommonComponents';
-import { useAppContext } from '../context/AppContext';
+import { useApp } from '../context/AppContext';
 import { BusIcon, GraduationCapIcon, TeacherIcon, UsersIcon, EditIcon, DeleteIcon, PlusIcon } from '../components/ui/Icons';
 import { Station, Student, User, Role, Payment, PaymentStatus, ReportData } from '../types';
 import { exportToExcel, exportToPdf } from '../lib/reportUtils';
@@ -10,7 +10,7 @@ import { exportToExcel, exportToPdf } from '../lib/reportUtils';
 const getTodayDate = () => new Date().toISOString().split('T')[0];
 
 const AdminDashboardView = () => {
-    const { stations, students, payments } = useAppContext();
+    const { stations, students, payments } = useApp();
     const today = getTodayDate();
     const paymentsToday = payments.filter(p => p.date === today && p.status === PaymentStatus.Paid);
 
@@ -43,7 +43,7 @@ const AdminDashboardView = () => {
 };
 
 const ManageStationsView = () => {
-    const { stations, deleteStation, addStation, updateStation, getTeacherForStation } = useAppContext();
+    const { stations, deleteStation, addStation, updateStation, getTeacherForStation } = useApp();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingStation, setEditingStation] = useState<Station | null>(null);
     const [stationName, setStationName] = useState('');
@@ -105,7 +105,7 @@ const ManageStationsView = () => {
 };
 
 const ManageTeachersView = () => {
-    const { users, stations, addUser, updateUser, deleteUser } = useAppContext();
+    const { users, stations, addUser, updateUser, deleteUser } = useApp();
     const teachers = users.filter(u => u.role === Role.Teacher);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -174,7 +174,7 @@ const ManageTeachersView = () => {
 };
 
 const ManageStudentsView = () => {
-    const { students, stations, addStudent, updateStudent, deleteStudent } = useAppContext();
+    const { students, stations, addStudent, updateStudent, deleteStudent } = useApp();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingStudent, setEditingStudent] = useState<Student | null>(null);
     const [formData, setFormData] = useState({ fullName: '', stationId: '' });
@@ -241,7 +241,7 @@ const ManageStudentsView = () => {
 };
 
 const AdminReportsView: FC = () => {
-    const { payments, students, stations } = useAppContext();
+    const { payments, students, stations } = useApp();
     const [filterDate, setFilterDate] = useState(getTodayDate());
     const [filterStation, setFilterStation] = useState('all');
 

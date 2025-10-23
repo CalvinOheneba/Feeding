@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo, FC } from 'react';
 import { DashboardLayout, Card, Table, Button } from '../components/ui/CommonComponents';
-import { useAppContext } from '../context/AppContext';
+import { useApp } from '../context/AppContext';
 import { UsersIcon, PaymentIcon } from '../components/ui/Icons';
 import { Student, PaymentStatus, ReportData } from '../types';
 import { exportToExcel, exportToPdf } from '../lib/reportUtils';
@@ -10,7 +10,7 @@ import { exportToExcel, exportToPdf } from '../lib/reportUtils';
 const getTodayDate = () => new Date().toISOString().split('T')[0];
 
 const TeacherDashboardView = () => {
-    const { currentUser, students, payments, stations } = useAppContext();
+    const { currentUser, students, payments, stations } = useApp();
     const today = getTodayDate();
     
     const stationId = currentUser?.stationId;
@@ -48,7 +48,7 @@ const TeacherDashboardView = () => {
 };
 
 const RecordPaymentsView = () => {
-    const { currentUser, students, payments, recordPayment } = useAppContext();
+    const { currentUser, students, payments, recordPayment } = useApp();
     const [selectedDate, setSelectedDate] = useState(getTodayDate());
 
     const stationId = currentUser?.stationId;
@@ -109,7 +109,7 @@ const RecordPaymentsView = () => {
 };
 
 const TeacherReportsView: FC = () => {
-    const { currentUser, payments, students, stations } = useAppContext();
+    const { currentUser, payments, students, stations } = useApp();
     const [filterDate, setFilterDate] = useState(getTodayDate());
 
     const stationId = currentUser?.stationId;
